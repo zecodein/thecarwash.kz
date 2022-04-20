@@ -1,0 +1,43 @@
+version: '3'
+services:
+  # app:
+  #   build: .
+  #   ports:
+  #     - '8080:8080'
+  #   environment:
+  #     - TZ=Asia/Almaty
+  #   depends_on:
+  #     - psql
+  #     - redis
+  #   restart: unless-stopped
+
+  psql:
+    image: postgres
+    container_name: postgres-thecarwash
+    environment:
+      POSTGRES_DB: thecarwash-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: PostgresTheCarWash2022
+      PGDATA: /data/postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/1-init.sql
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+
+  redis:
+    image: redis:6.2-alpine
+    container_name: redis-thecarwash
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass RedisTheCarWash2022
+    volumes:
+      - cache:/data
+
+volumes:
+  pg-data:
+    driver: local
+  cache:
+    driver: local
