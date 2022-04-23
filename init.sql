@@ -1,17 +1,17 @@
-CREATE TABLE IF NOT EXISTS "entity"(
-    "entity_id" BIGSERIAL PRIMARY KEY,
-    "name" TEXT NOT NULL,
-    "address" TEXT NOT NULL,
-    "created_at" TIMESTAMP NOT NULL,
-    "updated_at" TIMESTAMP NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS "user"(
     "user_id" BIGSERIAL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "number" TEXT NOT NULL UNIQUE,
     "access" TEXT NOT NULL DEFAULT 'basic_user',
     "password" TEXT NOT NULL,
+    "created_at" TIMESTAMP NOT NULL,
+    "updated_at" TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "entity"(
+    "entity_id" BIGSERIAL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
     "created_at" TIMESTAMP NOT NULL,
     "updated_at" TIMESTAMP NOT NULL
 );
