@@ -9,10 +9,11 @@ type Handler struct {
 	UserUsecase domain.UserUsecase
 }
 
-const key string = "thecarwash-session"
+const Key string = "thecarwash-session"
 
 func NewHandler(r *gin.Engine, h *Handler) {
 	r.POST("/user/signup", h.signUp)
 	r.POST("/user/signin", h.signIn)
+	r.GET("/user/signout", h.signOut)
 	// TODO update username, user number, user password
 }

@@ -48,14 +48,15 @@ func main() {
 	}
 	defer db.Close()
 
-	store, err := redis.NewStore(10, "tcp", config.CacheHost+config.CacheAddr, config.CachePassword, []byte("thecarwash"))
+	router := gin.Default()
+
+	store, err := redis.NewStore(10, "tcp", config.CacheHost+config.CacheAddr, config.CachePassword, []byte(web.Key))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	router := gin.Default()
 	router.Use(gin.LoggerWithWriter(logger))
-	router.Use(sessions.Sessions("thecarwash", store))
+	router.Use(sessions.Sessions(web.Key, store))
 
 	userRepo := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepo)

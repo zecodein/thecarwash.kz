@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zecodein/thecarwash.kz/domain"
 )
@@ -31,6 +32,12 @@ func (u *Handler) signUp(c *gin.Context) {
 
 func (u *Handler) signIn(c *gin.Context) {
 	user := &domain.User{}
+	session := sessions.Default(c)
+
+	if getSession(session) != 0 {
+		c.JSON(http.StatusConflict, user)
+		return
+	}
 
 	err := c.BindJSON(user)
 	if err != nil {
@@ -48,6 +55,29 @@ func (u *Handler) signIn(c *gin.Context) {
 		c.JSON(http.StatusForbidden, user)
 		return
 	}
-	// TODO set session
+
+	err = setSession(session, usr.UserID)
+	if err != nil {
+		c.JSON(errorHandler(err), user)
+		return
+	}
+
 	c.JSON(http.StatusOK, usr)
+}
+
+func (u *Handler) signOut(c *gin.Context) {
+	session := sessions.Default(c)
+
+	if getSession(session) == 0 {
+		c.JSON(http.StatusForbidden, nil)
+		return
+	}
+
+	err := deleteSession(session)
+	if err != nil {
+		c.JSON(errorHandler(err), nil)
+		return
+	}
+
+	c.JSON(http.StatusOK, nil)
 }
