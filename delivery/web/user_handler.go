@@ -49,5 +49,5 @@ func (u *Handler) signIn(c *gin.Context) {
 		return
 	}
 	// TODO set session
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, usr)
 }

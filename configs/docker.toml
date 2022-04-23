@@ -1,0 +1,11 @@
+bind_addr = ":8080"
+
+host_db = "postgres-thecarwash"
+port_db = ":5432"
+name_db = "thecarwash-db"
+user_db = "postgres"
+password_db = "PostgresTheCarWash2022"
+
+cache_host = "redis-thecarwash"
+cache_password = "RedisTheCarWash2022"
+cache_addr = ":6379"

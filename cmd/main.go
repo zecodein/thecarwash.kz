@@ -22,7 +22,7 @@ import (
 var configPath string
 
 func init() {
-	flag.StringVar(&configPath, "config-path", "configs/server.toml", "path to config file")
+	flag.StringVar(&configPath, "config-path", "configs/docker.toml", "path to config file")
 }
 
 func main() {
