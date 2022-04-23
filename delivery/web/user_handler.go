@@ -5,20 +5,16 @@ import (
 	"github.com/zecodein/thecarwash.kz/domain"
 )
 
-type UserHandler struct {
-	userUsecase domain.UserUsecase
+type Handler struct {
+	UserUsecase domain.UserUsecase
 }
 
 const key string = "thecarwash-session"
 
-func NewUserHandler(r *gin.Engine, us domain.UserUsecase) {
-	handler := &UserHandler{
-		userUsecase: us,
-	}
-
-	r.POST("/user/signup", handler.signUp)
+func NewHandler(r *gin.Engine, h *Handler) {
+	r.POST("/user/signup", h.signUp)
 }
 
-func (u *UserHandler) signUp(c *gin.Context) {
+func (u *Handler) signUp(c *gin.Context) {
 	// TODO
 }

@@ -57,11 +57,12 @@ func main() {
 	router.Use(gin.LoggerWithWriter(logger))
 	router.Use(sessions.Sessions("thecarwash", store))
 
-	// router.Static("/static", "./ui/static")
-
 	userRepo := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepo)
-	web.NewUserHandler(router, userUsecase)
+
+	web.NewHandler(router, &web.Handler{
+		UserUsecase: userUsecase,
+	})
 
 	server := &http.Server{
 		Addr:         config.BindAddr,
