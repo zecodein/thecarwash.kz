@@ -1,7 +1,6 @@
 package web
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -18,11 +17,9 @@ func (u *Handler) signUp(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(user)
-
 	user.UserID, err = u.UserUsecase.Create(c, user)
 	if err != nil {
-		c.JSON(errorHandler(err), user)
+		c.JSON(errorHandler(err), nil)
 		return
 	}
 
@@ -47,7 +44,7 @@ func (u *Handler) signIn(c *gin.Context) {
 
 	usr, err := u.UserUsecase.GetByNumber(c, user.Number)
 	if err != nil {
-		c.JSON(errorHandler(err), user)
+		c.JSON(errorHandler(err), nil)
 		return
 	}
 
@@ -58,7 +55,7 @@ func (u *Handler) signIn(c *gin.Context) {
 
 	err = setSession(session, usr.UserID)
 	if err != nil {
-		c.JSON(errorHandler(err), user)
+		c.JSON(errorHandler(err), nil)
 		return
 	}
 
