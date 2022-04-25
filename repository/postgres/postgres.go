@@ -10,7 +10,7 @@ import (
 
 func NewPostgresRepository(c *configs.Config) (*pgxpool.Pool, error) {
 	DSN := fmt.Sprintf("postgres://%s:%s@%s%s/%s", c.UserDB, c.PasswordDB, c.HostDB, c.PortDB, c.NameDB)
-	fmt.Println(DSN)
+
 	config, err := pgxpool.ParseConfig(DSN)
 	if err != nil {
 		return nil, fmt.Errorf("postgres: %w", err)

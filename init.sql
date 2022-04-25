@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS "user"(
 
 CREATE TABLE IF NOT EXISTS "washing"(
     "washing_id" BIGSERIAL PRIMARY KEY,
+    "iin" TEXT NOT NULL UNIQUE,
+    "bin" TEXT NOT NULL UNIQUE,
     "name" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "created_at" TIMESTAMP NOT NULL,

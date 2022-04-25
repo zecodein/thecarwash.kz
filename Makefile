@@ -1,7 +1,7 @@
 run:
 	docker-compose build
 	docker image prune
-	docker-compose up
+	docker-compose up -d
 
 start:
 	docker-compose start

@@ -47,6 +47,20 @@ func (u *userRepository) GetByNumber(ctx context.Context, phone string) (*domain
 	return &user, nil
 }
 
+func (u *userRepository) GetAccess(ctx context.Context, id int64) (string, error) {
+	stmt := `SELECT "access" FROM "user" WHERE "user_id" = $1`
+	access := ""
+
+	row := u.db.QueryRow(ctx, stmt, id)
+
+	err := row.Scan(&access)
+	if err != nil {
+		return "", nil
+	}
+
+	return access, nil
+}
+
 func (u *userRepository) Delete(ctx context.Context, id int64) error {
 	return nil
 }

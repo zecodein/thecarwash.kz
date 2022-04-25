@@ -59,10 +59,14 @@ func main() {
 	router.Use(sessions.Sessions(web.Key, store))
 
 	userRepo := repository.NewUserRepository(db)
+	washingRepo := repository.NewWashingRepostiroty(db)
+
 	userUsecase := usecase.NewUserUsecase(userRepo)
+	washingUsecase := usecase.NewWashingUsecase(washingRepo)
 
 	web.NewHandler(router, &web.Handler{
-		UserUsecase: userUsecase,
+		UserUsecase:    userUsecase,
+		WashingUsecase: washingUsecase,
 	})
 
 	server := &http.Server{

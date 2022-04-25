@@ -21,6 +21,7 @@ type UserUsecase interface {
 	// TODO update
 	GetByID(ctx context.Context, id int64) (*User, error)
 	GetByNumber(ctx context.Context, phone string) (*User, error)
+	GetAccess(ctx context.Context, id int64) (string, error)
 	CheckPassword(ctx context.Context, hash string, password string) bool
 	Delete(ctx context.Context, id int64) error
 }
@@ -29,5 +30,6 @@ type UserRepository interface {
 	Create(ctx context.Context, user *User) (int64, error)
 	GetByID(ctx context.Context, id int64) (*User, error)
 	GetByNumber(ctx context.Context, phone string) (*User, error)
+	GetAccess(ctx context.Context, id int64) (string, error)
 	Delete(ctx context.Context, id int64) error
 }

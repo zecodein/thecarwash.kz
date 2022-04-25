@@ -83,6 +83,15 @@ func (u *userUsecase) GetByNumber(ctx context.Context, phone string) (*domain.Us
 	return user, nil
 }
 
+func (u *userUsecase) GetAccess(ctx context.Context, id int64) (string, error) {
+	access, err := u.userRepo.GetAccess(ctx, id)
+	if err != nil {
+		return "", err
+	}
+
+	return access, nil
+}
+
 func (u *userUsecase) Delete(ctx context.Context, id int64) error {
 	return nil
 }
