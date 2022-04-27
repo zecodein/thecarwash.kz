@@ -30,7 +30,7 @@ func NewHandler(r *gin.Engine, h *Handler) {
 func (h *Handler) createWashing(c *gin.Context) {
 	userID := getSession(sessions.Default(c))
 	if userID <= 0 {
-		c.Redirect(http.StatusFound, "/user/signin")
+		c.JSON(http.StatusForbidden, nil)
 		return
 	}
 

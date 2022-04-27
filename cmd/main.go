@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -26,6 +25,13 @@ func init() {
 }
 
 func main() {
+	// request := fmt.Sprintf(`https://data.egov.kz/api/v4/gbd_ul/v1?apiKey=1a241b0789c74223842f63c5013262a3&source={size:100,query:{bool:{must:[{match:{bin:160340014245}}]}}}`)
+	// fmt.Println(request)
+	// resp, err := http.Get(request)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
 	flag.Parse()
 
 	logger, err := os.Create("server.log")
@@ -39,8 +45,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(config)
 
 	db, err := postgres.NewPostgresRepository(config)
 	if err != nil {

@@ -13,7 +13,7 @@ func errorHandler(err error) int {
 	switch err {
 	case domain.ErrInvalidData:
 		return http.StatusBadRequest
-	case domain.ErrInvalidIin:
+	case domain.ErrInvalidIinOrBin:
 		return http.StatusBadRequest
 	case domain.ErrUniqueData:
 		return http.StatusConflict

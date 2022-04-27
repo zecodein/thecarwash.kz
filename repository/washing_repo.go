@@ -18,11 +18,11 @@ func NewWashingRepostiroty(db *pgxpool.Pool) domain.WashingRepository {
 }
 
 func (w *washingRepostiroty) Create(ctx context.Context, washing *domain.Washing) (int64, error) {
-	stmt := `INSERT INTO "washing" ("iin", "bin", "name", "address", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "washing_id"`
+	stmt := `INSERT INTO "washing" ("name", "address", "iin_or_bin", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "washing_id"`
 
 	var id int64
 
-	err := w.db.QueryRow(ctx, stmt, washing.Iin, washing.Bin, washing.Name, washing.Address, washing.CreatedAt, washing.UpdatedAt).Scan(&id)
+	err := w.db.QueryRow(ctx, stmt, washing.Name, washing.Address, washing.IinOrBin, washing.CreatedAt, washing.UpdatedAt).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
@@ -35,7 +35,7 @@ func (w *washingRepostiroty) GetByID(ctx context.Context, id int64) (*domain.Was
 	washing := domain.Washing{}
 
 	row := w.db.QueryRow(ctx, stmt, id)
-	err := row.Scan(&washing.WashingID, &washing.Iin, &washing.Bin, &washing.Name, &washing.Address, &washing.CreatedAt, &washing.UpdatedAt)
+	err := row.Scan(&washing.WashingID, &washing.Name, &washing.Address, &washing.IinOrBin, &washing.CreatedAt, &washing.UpdatedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -44,9 +44,35 @@ func (w *washingRepostiroty) GetByID(ctx context.Context, id int64) (*domain.Was
 }
 
 func (w *washingRepostiroty) GetAll(ctx context.Context) (*[]domain.Washing, error) {
-	return nil, nil
+	stmt := `SELECT * FROM "washing"`
+	washing := domain.Washing{}
+	carWashes := []domain.Washing{}
+
+	rows, err := w.db.Query(ctx, stmt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		err = rows.Scan(&washing.WashingID, &washing.Name, &washing.Address, &washing.IinOrBin, &washing.CreatedAt, &washing.UpdatedAt)
+		if err != nil {
+			return nil, err
+		}
+
+		carWashes = append(carWashes, washing)
+	}
+
+	return &carWashes, nil
 }
 
 func (w *washingRepostiroty) Delete(ctx context.Context, id int64) error {
+	stmt := `DELETE FROM "washing" WHERE "washing_id" = $1`
+
+	_, err := w.db.Exec(ctx, stmt, id)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

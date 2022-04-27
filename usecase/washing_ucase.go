@@ -24,17 +24,17 @@ func (w *washingUsecase) Create(ctx context.Context, washing *domain.Washing) (i
 		return 0, domain.ErrInvalidData
 	}
 
-	if strings.TrimSpace(washing.Iin) == "" || strings.TrimSpace(washing.Bin) == "" {
+	if strings.TrimSpace(washing.IinOrBin) == "" {
 		return 0, domain.ErrInvalidData
 	}
 
-	rIin, err := regexp.Compile(`^((0[48]|[2468][048]|[13579][26])0229[1-6]|000229[34]|\d\d((0[13578]|1[02])(0[1-9]|[12]\d|3[01])|(0[469]|11)(0[1-9]|[12]\d|30)|02(0[1-9]|1\d|2[0-8]))[1-6])\d{5}$`)
+	r, err := regexp.Compile(`^((0[48]|[2468][048]|[13579][26])0229[1-6]|000229[34]|\d\d((0[13578]|1[02])(0[1-9]|[12]\d|3[01])|(0[469]|11)(0[1-9]|[12]\d|30)|02(0[1-9]|1\d|2[0-8]))[1-6])\d{5}$`)
 	if err != nil {
 		return 0, err
 	}
 
-	if !rIin.MatchString(washing.Iin) {
-		return 0, domain.ErrInvalidIin
+	if !r.MatchString(washing.IinOrBin) {
+		return 0, domain.ErrInvalidIinOrBin
 	}
 
 	washing.CreatedAt = time.Now()
@@ -58,9 +58,14 @@ func (w *washingUsecase) GetByID(ctx context.Context, id int64) (*domain.Washing
 }
 
 func (w *washingUsecase) GetAll(ctx context.Context) (*[]domain.Washing, error) {
-	return nil, nil
+	carWashes, err := w.washingRepo.GetAll(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return carWashes, nil
 }
 
 func (w *washingUsecase) Delete(ctx context.Context, id int64) error {
-	return nil
+	return w.washingRepo.Delete(ctx, id)
 }
